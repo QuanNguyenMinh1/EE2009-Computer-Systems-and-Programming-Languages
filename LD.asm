@@ -1,0 +1,5 @@
+.ORIG x30F6
+LEA R1, #-3
+ADD R2, R1, #14
+ST R2, #-5
+.END
