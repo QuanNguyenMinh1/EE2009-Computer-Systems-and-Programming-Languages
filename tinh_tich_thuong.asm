@@ -1,32 +1,39 @@
-.ORIG X3050
-
-IN
-ADD R1, R0, #0
-IN
-ADD R2, R0, #0
-;----------
-LD R3, ASCII_OFFSET
-;----------
-ADD R4, R4, R3
-
+.ORIG X3000
+LD R4, ASCII_OFFSET
 NOT R4, R4
 ADD R4, R4, #1
+AND R2, R2, #0
 
-ADD R1, R1, R4;	so ban dau R1 - offset_ASCII
-ADD R2, R2, R4; so ban dau R2 - offset_ASCII
-;----------
-;ADD R5, R1, #0; R5 la so bi nhan
-AND R5, R5, #0
-ADD R6, R2, #0; R6 la so nhan - offset_LOOP
-NHAN:
-ADD R5, R5, R1
-ADD R6, R6, #-1
-BRp NHAN
-;----------
-ADD R0, R5, R3
-OUT
-;----------
+IN
+ADD R1, R0, R4
+IN
+ADD R2, R0, R4
+
+ADD R3, R2, #0; COUNTER
+AND R5, R5, #0; SUM
+
+TINH_TICH:
+	ADD R5, R5, R1
+	
+	ADD R3, R3, #-1
+	BRp TINH_TICH
+PRE_TINH_THUONG:
+	AND R3, R3, #0
+	ADD R6, R1, #0
+	NOT R4, R2
+	ADD R4, R4, #1
+TINH_THUONG:
+	ADD R3, R3, #1
+	ADD R6, R6, R4
+	BRp TINH_THUONG
+
+NEXT:	LD R4, ASCII_OFFSET
+	ADD R0, R5, R4; OUT TICH
+	OUT
+	ADD R0, R3, R4; OUT THUONG
+	OUT
+
 HALT
-;----------
-ASCII_OFFSET .FILL X30
+
+ASCII_OFFSET	.FILL X30
 .END
